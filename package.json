@@ -4,10 +4,10 @@
   "description": "This is a backend template for node js express",
   "license": "ISC",
   "author": "Rohit Kushwaha",
-  "main": "dist/main.js",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon src/main.ts",
-    "start": "nodemon src/main.js",
+    "dev": "nodemon src/server.ts",
+    "start": "nodemon src/server.js",
     "prepare": "husky",
     "build": "tsc"
   },
