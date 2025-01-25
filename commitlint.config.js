@@ -16,6 +16,7 @@ module.exports = {
         "cli",
         "chore",
         "revert",
+        "add",
       ],
     ],
     "subject-case": [2, "always", "sentence-case"],
