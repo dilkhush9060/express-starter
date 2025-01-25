@@ -1,0 +1,22 @@
+{
+  "name": "backend-template",
+  "version": "1.0.0",
+  "description": "This is a backend template for node js express",
+  "license": "ISC",
+  "author": "Rohit Kushwaha",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "nodemon src/main.ts",
+    "start": "nodemon src/main.js",
+    "prepare": "husky",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
