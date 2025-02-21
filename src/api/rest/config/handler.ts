@@ -1,33 +1,33 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express"
 import { HttpError } from "./httpError"
-import { myEnv } from "@/configs"
+import { myEnvironment } from "@/configs"
 
-export const AsyncErrorHandler = (func: (req: Request, res: Response, next: NextFunction) => Promise<unknown>) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(func(req, res, next)).catch(next)
+export const AsyncErrorHandler = (function_: (request: Request, response: Response, next: NextFunction) => Promise<unknown>) => {
+    return (request: Request, response: Response, next: NextFunction) => {
+        Promise.resolve(function_(request, response, next)).catch(next)
     }
 }
 
-export const globalErrorHandler: ErrorRequestHandler = (err: HttpError, _: Request, res: Response) => {
-    err.statusCode = err.statusCode || 50
-    err.message = err.message || "Internal Server Error"
+export const globalErrorHandler: ErrorRequestHandler = (error: HttpError, _: Request, response: Response) => {
+    error.statusCode = error.statusCode || 50
+    error.message = error.message || "Internal Server Error"
 
-    if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") {
-        err.statusCode = 401
-        err.message = "Unauthorized | " + (err.name === "TokenExpiredError" ? "Token expired" : "Invalid token")
+    if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
+        error.statusCode = 401
+        error.message = "Unauthorized | " + (error.name === "TokenExpiredError" ? "Token expired" : "Invalid token")
     }
 
-    res.status(err.statusCode).jsonp({
-        statusCode: err.statusCode,
-        status: err.status,
-        message: err.message,
-        error: myEnv.ENV == "development" ? err.err : undefined,
-        stack: myEnv.ENV == "development" ? err.stack : undefined
+    response.status(error.statusCode).jsonp({
+        statusCode: error.statusCode,
+        status: error.status,
+        message: error.message,
+        error: myEnvironment.ENV == "development" ? error.err : undefined,
+        stack: myEnvironment.ENV == "development" ? error.stack : undefined
     })
 }
 
 export const notFoundHandler = (_: Request, __: Response, next: NextFunction) => {
-    const err = new HttpError("route not found", 404)
-    next(err)
+    const error = new HttpError("route not found", 404)
+    next(error)
 }
 

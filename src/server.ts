@@ -1,13 +1,13 @@
 import app from "@/api/rest"
 // import { createServer } from "http"
-import { logger, myEnv } from "@/configs"
-const server = app.listen(myEnv.PORT)
+import { logger, myEnvironment } from "@/configs"
+const server = app.listen(myEnvironment.PORT)
 
 ;(() => {
     try {
-        logger.info(`server is running on http://127.0.0.1:${myEnv.PORT}`)
-    } catch (err) {
-        logger.error(err instanceof Error ? err.message : "unknown error")
+        logger.info(`server is running on http://127.0.0.1:${myEnvironment.PORT}`)
+    } catch (error) {
+        logger.error(error instanceof Error ? error.message : "unknown error")
 
         server.close((error) => {
             if (error) {

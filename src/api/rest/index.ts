@@ -1,5 +1,5 @@
-import express, { Application, Request } from "express"
-import path from "path"
+import express, { Application, Request, Response } from "express"
+import path from "node:path"
 import { globalErrorHandler } from "./config"
 import { logger, responseMessage } from "@/configs"
 
@@ -12,8 +12,8 @@ app.use(express.static(path.join(__dirname, "../", "public")))
 
 app.use(logger.httpExpress)
 
-app.get("/", (_: Request, res) => {
-    res.status(200).json({ message: responseMessage.OK })
+app.get("/", (_: Request, response: Response) => {
+    response.status(200).json({ message: responseMessage.OK })
 })
 
 app.use(globalErrorHandler)

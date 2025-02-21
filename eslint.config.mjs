@@ -2,6 +2,7 @@
 import eslint from "@eslint/js"
 import tseslint from "typescript-eslint"
 import eslintConfigPrettier from "eslint-config-prettier"
+import unicorn from "eslint-plugin-unicorn"
 
 export default tseslint.config({
     languageOptions: {
@@ -11,15 +12,18 @@ export default tseslint.config({
         }
     },
     files: ["**/*.ts"],
-    extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
+    extends: [
+        eslint.configs.recommended,
+        ...tseslint.configs.recommendedTypeChecked,
+        eslintConfigPrettier,
+        unicorn.configs.recommended // ✅ Already includes the plugin, no need to redefine it
+    ],
     rules: {
         "no-console": "error",
         quotes: ["error", "double", { allowTemplateLiterals: true }],
-        "unicorn/filename-case": ["error", { case: ["camelCase", "pascalCase"] }]
-    },
-    plugins: {
-        "@typescript-eslint": tseslint.plugin,
-        "@typescript-parser": tseslint.parser
+        "unicorn/filename-case": ["error", { case: "camelCase" }],
+        "unicorn/no-process-exit": "off",
+        "unicorn/prefer-module": "off"
     },
     settings: {
         "import/resolver": {

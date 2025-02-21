@@ -1,10 +1,10 @@
 import dotenvFlow from "dotenv-flow"
 dotenvFlow.config()
 
-const _env = {
+const _environment = {
     ENV: process.env.ENV,
     PORT: process.env.PORT || 5000
 }
 
-export const myEnv = Object.freeze(_env)
+export const myEnvironment = Object.freeze(_environment)
 
