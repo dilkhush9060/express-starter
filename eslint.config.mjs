@@ -14,7 +14,8 @@ export default tseslint.config({
     extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     rules: {
         "no-console": "error",
-        quotes: ["error", "double", { allowTemplateLiterals: true }]
+        quotes: ["error", "double", { allowTemplateLiterals: true }],
+        "unicorn/filename-case": ["error", { case: ["camelCase", "pascalCase"] }]
     },
     plugins: {
         "@typescript-eslint": tseslint.plugin,
