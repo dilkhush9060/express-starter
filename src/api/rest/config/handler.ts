@@ -15,7 +15,8 @@ export const globalErrorHandler: AppErrorRequestHandler = (
     error: HttpError | Error,
     _request: AppRequest,
     response: AppResponse,
-    _next: AppNextFunction
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    __: AppNextFunction
 ) => {
     let statusCode = 500
     let message = "Internal Server Error"

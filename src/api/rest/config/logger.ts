@@ -27,7 +27,7 @@ export const httpLogger = pinoHttp({
     serializers: {
         req: (request: CustomRequest) => {
             const userAgentString = request.headers["user-agent"] || ""
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
             const agent = useragent.parse(userAgentString) as ParsedUserAgent
 
             return {
