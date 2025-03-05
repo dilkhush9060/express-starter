@@ -1,33 +1,47 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express"
 import { HttpError } from "./httpError"
-import { myEnvironment } from "@/configs"
+import { logger, myEnvironment } from "@/configs"
 
-export const AsyncErrorHandler = (function_: (request: Request, response: Response, next: NextFunction) => Promise<unknown>) => {
-    return (request: Request, response: Response, next: NextFunction) => {
+// Type for async handler
+type AsyncHandler = (request: Request, response: Response, next: NextFunction) => Promise<unknown>
+
+export const AsyncErrorHandler = (function_: AsyncHandler) => {
+    return (request: Request, response: Response, next: NextFunction): void => {
         Promise.resolve(function_(request, response, next)).catch(next)
     }
 }
 
-export const globalErrorHandler: ErrorRequestHandler = (error: HttpError, _: Request, response: Response) => {
-    error.statusCode = error.statusCode || 50
-    error.message = error.message || "Internal Server Error"
+export const globalErrorHandler: ErrorRequestHandler = (error: HttpError | Error, _request: Request, response: Response) => {
+    logger.info("global")
 
-    if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
-        error.statusCode = 401
-        error.message = "Unauthorized | " + (error.name === "TokenExpiredError" ? "Token expired" : "Invalid token")
+    let statusCode = 500
+    let message = "Internal Server Error"
+
+    if (error instanceof HttpError) {
+        statusCode = error.statusCode || 500
+        message = error.message || "Internal Server Error"
     }
 
-    response.status(error.statusCode).jsonp({
-        statusCode: error.statusCode,
-        status: error.status,
-        message: error.message,
-        error: myEnvironment.ENV == "development" ? error.err : undefined,
-        stack: myEnvironment.ENV == "development" ? error.stack : undefined
-    })
+    if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
+        statusCode = 401
+        message = `Unauthorized | ${error.name === "TokenExpiredError" ? "Token expired" : "Invalid token"}`
+    }
+
+    const responseBody = {
+        statusCode,
+        status: statusCode >= 400 && statusCode < 600 ? "error" : "success",
+        message,
+        ...(myEnvironment.NODE_ENV === "development" && {
+            error: error instanceof HttpError ? error.error : error,
+            stack: error.stack
+        })
+    }
+
+    response.status(statusCode).json(responseBody)
 }
 
-export const notFoundHandler = (_: Request, __: Response, next: NextFunction) => {
-    const error = new HttpError("route not found", 404)
+export const notFoundHandler = (request: Request, _response: Response, next: NextFunction): void => {
+    const error = new HttpError(`Route not found: ${request.method} ${request.originalUrl}`, 404)
     next(error)
 }
 

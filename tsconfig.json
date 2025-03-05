@@ -1,28 +1,32 @@
 {
     "compilerOptions": {
-        "target": "ES2016",
-        "module": "CommonJS",
-        "rootDir": "./src",
-        "outDir": "./dist",
-        "removeComments": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "strictPropertyInitialization": true,
-        "alwaysStrict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
+        "target": "ES2020", // Adjusted to a stable, widely supported target
+        "module": "CommonJS", // Outputs CommonJS modules
+        "moduleResolution": "Node", // Resolves modules using Node.js CommonJS rules
+        "rootDir": "./src", // Source directory
+        "outDir": "./dist", // Output directory
+        "removeComments": true, // Clean output
+        "esModuleInterop": true, // Ensures compatibility with CommonJS modules
+        "forceConsistentCasingInFileNames": true, // Avoid case-sensitivity issues
+        "strict": true, // Enables all strict options
+        "noImplicitAny": true, // Explicit types required
+        "strictNullChecks": true, // Null safety
+        "strictFunctionTypes": true, // Function type safety
+        "strictPropertyInitialization": true, // Ensure properties are initialized
+        "alwaysStrict": true, // Enforce strict mode in JS output
+        "noUnusedLocals": true, // Catch unused variables
+        "noUnusedParameters": true, // Catch unused parameters
+        "noImplicitReturns": true, // Ensure functions return explicitly
+        "skipLibCheck": true, // Performance optimization
+        "baseUrl": ".", // Base for path resolution
         "paths": {
-            "@/*": ["src/*"]
-        }
+            "@/*": ["src/*"] // Alias for src imports
+        },
+        "sourceMap": true, // For debugging
+        "declaration": false, // Generate .d.ts files (optional)
+        "typeRoots": ["./node_modules/@types", "./src/types"]
     },
-    "include": ["./src/**/*", "./src/types/**/*.d.ts"],
-    "exclude": ["node_modules"]
+    "include": ["./src/**/*", "./src/types/**/*.d.ts"], // Source and type files
+    "exclude": ["node_modules", "dist"] // Exclude node_modules and output dir
 }
 
