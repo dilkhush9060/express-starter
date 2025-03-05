@@ -1,7 +1,7 @@
 import path from "node:path"
-import morgan from "morgan"
-import express, { Application, NextFunction, Request, Response } from "express"
-import { globalErrorHandler, HttpError, notFoundHandler } from "./config"
+import express, { Application } from "express"
+import { globalErrorHandler, httpLogger, notFoundHandler } from "./config"
+import { AppRequest, AppResponse, AppNextFunction } from "@/types"
 
 const app: Application = express()
 
@@ -9,14 +9,17 @@ const app: Application = express()
 app.use(express.json({ limit: "2mb" }))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "../", "public")))
-app.use(morgan("combined"))
+app.use(httpLogger)
 
-app.get("/", (_: Request, response: Response, next: NextFunction) => {
-    return next(new HttpError("my error", 400))
-    response.status(200).json({ message: "server is running" })
+// health check
+app.get("/", (_: AppRequest, response: AppResponse, _next: AppNextFunction) => {
+    response.status(200).json({ status: "ok", statusCode: 200, message: "server is running" })
 })
 
+// 404
 app.use(notFoundHandler)
+
+// global error handle
 app.use(globalErrorHandler)
 
 export default app

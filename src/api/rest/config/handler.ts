@@ -1,19 +1,22 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from "express"
 import { HttpError } from "./httpError"
-import { logger, myEnvironment } from "@/configs"
+import { myEnvironment } from "@/configs"
+import { AppRequest, AppResponse, AppNextFunction, AppErrorRequestHandler } from "@/types"
 
 // Type for async handler
-type AsyncHandler = (request: Request, response: Response, next: NextFunction) => Promise<unknown>
+type AsyncHandler = (request: AppRequest, response: AppResponse, next: AppNextFunction) => Promise<unknown>
 
 export const AsyncErrorHandler = (function_: AsyncHandler) => {
-    return (request: Request, response: Response, next: NextFunction): void => {
+    return (request: AppRequest, response: AppResponse, next: AppNextFunction): void => {
         Promise.resolve(function_(request, response, next)).catch(next)
     }
 }
 
-export const globalErrorHandler: ErrorRequestHandler = (error: HttpError | Error, _request: Request, response: Response) => {
-    logger.info("global")
-
+export const globalErrorHandler: AppErrorRequestHandler = (
+    error: HttpError | Error,
+    _request: AppRequest,
+    response: AppResponse,
+    _next: AppNextFunction
+) => {
     let statusCode = 500
     let message = "Internal Server Error"
 
@@ -38,10 +41,11 @@ export const globalErrorHandler: ErrorRequestHandler = (error: HttpError | Error
     }
 
     response.status(statusCode).json(responseBody)
+    return
 }
 
-export const notFoundHandler = (request: Request, _response: Response, next: NextFunction): void => {
+export const notFoundHandler = (request: AppRequest, _response: AppResponse, next: AppNextFunction): void => {
     const error = new HttpError(`Route not found: ${request.method} ${request.originalUrl}`, 404)
-    next(error)
+    return next(error)
 }
 

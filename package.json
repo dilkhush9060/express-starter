@@ -24,11 +24,14 @@
     "devDependencies": {
         "@commitlint/cli": "^19.6.1",
         "@commitlint/config-conventional": "^19.6.0",
-        "@eslint/js": "^9.19.0",
+        "@eslint/js": "^9.20.0",
         "@types/eslint__js": "^8.42.3",
         "@types/express": "^5.0.0",
         "@types/morgan": "^1.9.9",
         "@types/node": "^22.10.10",
+        "@types/useragent": "^2.3.4",
+        "@typescript-eslint/eslint-plugin": "^8.26.0",
+        "@typescript-eslint/parser": "^8.26.0",
         "eslint": "^9.19.0",
         "eslint-config-prettier": "^10.0.1",
         "eslint-import-resolver-typescript": "^3.7.0",
@@ -43,11 +46,13 @@
         "typescript-eslint": "^8.21.0"
     },
     "dependencies": {
-        "@rohit2005/logger": "^1.1.0",
         "cross-env": "^7.0.3",
         "dotenv-flow": "^4.1.0",
         "express": "^5.0.1",
-        "morgan": "^1.10.0"
+        "pino": "^9.6.0",
+        "pino-http": "^10.4.0",
+        "pino-pretty": "^13.0.0",
+        "useragent": "^2.3.0"
     },
     "pnpm": {
         "onlyBuiltDependencies": [
@@ -55,4 +60,3 @@
         ]
     }
 }
-

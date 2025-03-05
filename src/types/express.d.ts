@@ -1,5 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import express from "express"
+import { Request, Response, NextFunction, ErrorRequestHandler } from "express"
+
+export type AppRequest = Request
+export type AppResponse = Response
+export type AppNextFunction = NextFunction
+export type AppErrorRequestHandler = ErrorRequestHandler
 
 declare global {
     namespace Express {
